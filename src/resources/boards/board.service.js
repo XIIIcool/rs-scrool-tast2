@@ -1,5 +1,5 @@
-const usersRepo = require('./user.memory.repository');
-const User = require('./user.model');
+const usersRepo = require('./board.memory.repository');
+const User = require('./board.model');
 
 const getAll = () => usersRepo.getAll();
 

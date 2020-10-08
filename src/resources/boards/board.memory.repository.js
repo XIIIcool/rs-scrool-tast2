@@ -1,6 +1,6 @@
 const DB = require('../../utils/inMemoryDb');
 const NOT_FOUND_ERROR = require('../../resources/errors/appError');
-const TABLE_NAME = 'Users';
+const TABLE_NAME = 'Boards';
 
 const getAll = async () => {
   return await DB.getAllEntities(TABLE_NAME);
