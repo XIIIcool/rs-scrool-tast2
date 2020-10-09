@@ -18,14 +18,14 @@ const getTaskByBoard = async boardId => {
 
 const getTaskByBoardAndTask = async (boardId, taskId) => {
   const task = await DB.getAllEntities(TABLE_NAME, taskId).filter(
-    tasks => tasks.id === taskId && task.boardId === boardId
+    tasks => tasks.id === taskId && tasks.boardId === boardId
   );
 
   if (!task) {
     throw new NOT_FOUND_ERROR(`Couldn\`t find a task with id: ${taskId}`);
   }
 
-  return task;
+  return task[0];
 };
 
 const remove = async taskId => {

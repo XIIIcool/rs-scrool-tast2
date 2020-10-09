@@ -27,7 +27,7 @@ const save = async user => {
 };
 
 const update = async (id, user) => {
-  console.log(user);
+
   const entity = await DB.updateEntity(TABLE_NAME, id, user);
 
   if (!entity) {

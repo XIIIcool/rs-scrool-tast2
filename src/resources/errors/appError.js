@@ -1,6 +1,6 @@
 class NOT_FOUND_ERROR {
   constructor(text) {
-    console.error(text);
+    console.log(text);
     // process.exit(400);
   }
 }
