@@ -2,14 +2,14 @@ const fs = require('fs');
 const { createLogger, format, transports } = require('winston');
 const path = require('path');
 
-const requestFile = path.join(__dirname, '../logs/request.log');
-const errorFile = path.join(__dirname, '../logs/error.log');
-const combinedFile = path.join(__dirname, '../logs/combined.log');
+const requestFile = path.join(__dirname, '../logs/logs.log');
+// const errorFile = path.join(__dirname, '../logs/error.log');
+// const combinedFile = path.join(__dirname, '../logs/combined.log');
 
 try {
   fs.unlinkSync(requestFile);
-  fs.unlinkSync(errorFile);
-  fs.unlinkSync(combinedFile);
+  // fs.unlinkSync(errorFile);
+  // fs.unlinkSync(combinedFile);
 }
 catch (ex) { }
 
@@ -26,9 +26,9 @@ const logger = createLogger({
   defaultMeta: {},
   transports: [
 
-    new transports.File({ filename: errorFile, level: 'error' }),
-    new transports.File({ filename: requestFile, level: 'info' }),
-    new transports.File({ filename: combinedFile })
+    // new transports.File({ filename: logs, level: 'info' }),
+    // new transports.File({ filename: errorFile, level: 'error' }),
+    new transports.File({ filename: requestFile })
   ]
 });
 

@@ -1,8 +1,11 @@
-class NOT_FOUND_ERROR {
-  constructor(text) {
-    console.log(text);
-    // process.exit(400);
+class NOT_FOUND_ERROR extends Error {
+
+  constructor(message) {
+    super();
+    this.message = message;
+    this.name = 'NotFoundError';
   }
+
 }
 
 module.exports = NOT_FOUND_ERROR;

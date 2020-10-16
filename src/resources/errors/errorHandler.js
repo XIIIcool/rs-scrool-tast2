@@ -1,6 +1,7 @@
 const notFoundError = require('./appError');
 
 const handle = (err, req, res, next) => {
+  console.log(req);
   if (err instanceof notFoundError) {
     res.status(err.status).send(err.message);
   } else if (err) {
@@ -9,4 +10,6 @@ const handle = (err, req, res, next) => {
   next();
 };
 
-module.exports = handle;
+module.exports = {
+  handle
+};
