@@ -7,7 +7,6 @@ const boardsRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const Winston = require('./utils/Logger');
 const RequestMiddlewareLog = require('./resources/middlewares/RequestLog');
-const createError = require('http-errors');
 const errorHandler = require('./resources/errors/errorHandler');
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -15,9 +14,6 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
-// запись всех request запросов
-app.use(RequestMiddlewareLog.init);
 
 app.use('/', (req, res, next) => {
 
@@ -28,10 +24,14 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+// запись всех request запросов
+app.use(RequestMiddlewareLog.init);
+
 app.use('/users', userRouter);
 app.use('/boards', boardsRouter);
 app.use('/tasks', taskRouter);
 
+// мидлвеер ошибок
 app.use(errorHandler.handle);
 
 process.on('uncaughtException', (error) => {
