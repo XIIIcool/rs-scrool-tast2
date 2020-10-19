@@ -19,12 +19,6 @@ app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // запись всех request запросов
 app.use(RequestMiddlewareLog.init);
 
-// app.use((request, response, next) => (next(createError(404))));
-
-// app.use((request, response, err) => {
-//   console.log(err);
-// })
-
 app.use('/', (req, res, next) => {
 
   if (req.originalUrl === '/') {
@@ -34,21 +28,11 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-
-
 app.use('/users', userRouter);
 app.use('/boards', boardsRouter);
 app.use('/tasks', taskRouter);
 
-app.use(errorHandler.handle)
-
-app.use(function(err, req, res, next){
-  // we may use properties of the error object
-  // here and next(err) appropriately, or if
-  // we possibly recovered from the error, simply next().
-  res.status(err.status || 500);
-  res.render('500', { error: err });
-});
+app.use(errorHandler.handle);
 
 process.on('uncaughtException', (error) => {
   Winston.logger.error('uncaughtException detected:', error);
@@ -58,5 +42,8 @@ process.on('unhandledRejection', (error) => {
   Winston.logger.error('unhandledRejection detected:', error);
 })
 
+// throw Error('Oops! uncaughtException...'); //test point 3
+
+// Promise.reject(Error('Oops! unhandledRejection...')); //test point 4
 
 module.exports = app;

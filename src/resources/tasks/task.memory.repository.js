@@ -1,5 +1,5 @@
 const DB = require('../../utils/inMemoryDb');
-const NOT_FOUND_ERROR = require('../../resources/errors/appError');
+const NOT_FOUND_ERROR = require('../errors/NotFoundError');
 const TABLE_NAME = 'Tasks';
 
 const getTaskByBoard = async boardId => {
@@ -21,8 +21,8 @@ const getTaskByBoardAndTask = async (boardId, taskId) => {
     tasks => tasks.id === taskId && tasks.boardId === boardId
   );
 
-  if (!task) {
-    throw new NOT_FOUND_ERROR(`Couldn\`t find a task with id: ${taskId}`);
+  if (!task || task.length === 0) {
+    throw new NOT_FOUND_ERROR(`Couldn\`t find a task with id: ${taskId} and board id: ${boardId}`);
   }
 
   return task[0];

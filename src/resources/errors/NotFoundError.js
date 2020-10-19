@@ -4,6 +4,7 @@ class NOT_FOUND_ERROR extends Error {
     super();
     this.message = message;
     this.name = 'NotFoundError';
+    this.status = 404;
   }
 
 }

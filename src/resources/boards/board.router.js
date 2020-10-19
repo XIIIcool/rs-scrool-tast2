@@ -17,7 +17,7 @@ router.route('/:id').get(async (req, res) => {
     const board = await boardsService.get(req.params.id);
     res.status(200).send(Board.toResponse(board));
   } catch (e) {
-    res.sendStatus(404);
+    res.status(e.status).send({ message: e.message });
   }
 
 });
@@ -27,25 +27,33 @@ router.route('/:id').delete(async (req, res) => {
     await boardsService.remove(req.params.id);
     res.sendStatus(200);
   } catch (e) {
-    res.sendStatus(404);
+    res.status(e.status).send({ message: e.message });
   }
 
 });
 
 router.route('/').post(async (req, res) => {
-  const board = await boardsService.save(Board.fromRequest(req.body));
-  res.status(200).send(Board.toResponse(board));
+  try {
+    const board = await boardsService.save(Board.fromRequest(req.body));
+    res.status(200).send(Board.toResponse(board));
+  } catch (e) {
+    res.status(e.status).send({ message: e.message });
+  }
 });
 
 router.route('/:id').put(async (req, res) => {
-  const body = req.body;
-  body.id = req.params.id;
-  const board = await boardsService.update(
-    req.params.id,
-    Board.fromRequest(body)
-  );
+  try {
+    const body = req.body;
+    body.id = req.params.id;
+    const board = await boardsService.update(
+      req.params.id,
+      Board.fromRequest(body)
+    );
 
-  res.status(200).send(Board.toResponse(board));
+    res.status(200).send(Board.toResponse(board));
+  } catch (e) {
+    res.status(e.status).send({ message: e.message });
+  }
 });
 
 // BOARDS
@@ -54,15 +62,23 @@ router.route('/:id').put(async (req, res) => {
 // TASKS
 
 router.route('/:boardId/tasks').get(async (req, res) => {
-  const tasks = await tasksService.getTaskByBoard(req.params.boardId);
-  res.json(tasks.map(Task.toResponse));
+  try {
+    const tasks = await tasksService.getTaskByBoard(req.params.boardId);
+    res.json(tasks.map(Task.toResponse));
+  } catch (e) {
+    res.status(e.status).send({ message: e.message });
+  }
 });
 
 router.route('/:boardId/tasks').post(async (req, res) => {
-  const body = req.body;
-  body.boardId = req.params.boardId;
-  const task = await tasksService.save(Task.fromRequest(body));
-  res.status(200).send(Task.toResponse(task));
+  try {
+    const body = req.body;
+    body.boardId = req.params.boardId;
+    const task = await tasksService.save(Task.fromRequest(body));
+    res.status(200).send(Task.toResponse(task));
+  } catch (e) {
+    res.status(e.status).send({ message: e.message });
+  }
 });
 
 router.route('/:boardId/tasks/:taskId').get(async (req, res) => {
@@ -76,22 +92,29 @@ router.route('/:boardId/tasks/:taskId').get(async (req, res) => {
     res.json(Task.toResponse(task));
 
   } catch (e) {
-    res.sendStatus(404);
+
+    console.log(e);
+
+    res.status(e.status).send({ message: e.message });
   }
 
 });
 
 router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
-  const body = req.body;
-  body.id = req.params.taskId;
-  body.boardId = req.params.boardId;
-  const task = await tasksService.update(
-    req.params.taskId,
-    req.params.boardId,
-    Task.fromRequest(body)
-  );
+  try {
+    const body = req.body;
+    body.id = req.params.taskId;
+    body.boardId = req.params.boardId;
+    const task = await tasksService.update(
+      req.params.taskId,
+      req.params.boardId,
+      Task.fromRequest(body)
+    );
 
-  res.status(200).send(Task.toResponse(task));
+    res.status(200).send(Task.toResponse(task));
+  } catch (e) {
+    res.status(e.status).send({ message: e.message });
+  }
 });
 
 router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
@@ -99,7 +122,8 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
     const task = await tasksService.remove(req.params.taskId, req.params.boardId);
     res.sendStatus(200);
   } catch (e) {
-    res.sendStatus(404);
+    // console.log(e);
+    res.status(e.status).send({ message: e.message });
   }
 
 });
