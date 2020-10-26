@@ -87,6 +87,7 @@ router.route('/:boardId/tasks/:taskId').get(
         req.params.boardId,
         req.params.taskId
       );
+      console.log('tasks', task);
       res.json(Task.toResponse(task));
 
     }));
@@ -107,6 +108,7 @@ router.route('/:boardId/tasks/:taskId').put(
       res.status(200).send(Task.toResponse(task));
 
     }));
+
 
 router.route('/:boardId/tasks/:taskId').delete(
   handleRoute(

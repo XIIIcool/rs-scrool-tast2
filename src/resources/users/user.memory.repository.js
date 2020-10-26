@@ -1,4 +1,5 @@
-const DB = require('../../utils/inMemoryDb');
+// const DB = require('../../utils/inMemoryDb');
+const DB = require('../../utils/MongoDb');
 const NOT_FOUND_ERROR = require('../errors/NotFoundError');
 const TABLE_NAME = 'Users';
 

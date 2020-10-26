@@ -1,11 +1,18 @@
-const DB = require('../../utils/inMemoryDb');
+// const DB = require('../../utils/inMemoryDb');
+const DB = require('../../utils/MongoDb');
 const NOT_FOUND_ERROR = require('../errors/NotFoundError');
 const TABLE_NAME = 'Tasks';
 
+const getTasksWhereUserId = async (userId) => {
+  return await DB.getAllEntities(TABLE_NAME, {
+    userId: userId
+  });
+};
+
 const getTaskByBoard = async boardId => {
-  const tasks = await DB.getAllEntities(TABLE_NAME).filter(
-    task => task.boardId === boardId
-  );
+  const tasks = await DB.getAllEntities(TABLE_NAME, {
+    boardId: boardId
+  });
 
   if (!tasks) {
     throw new NOT_FOUND_ERROR(
@@ -17,9 +24,10 @@ const getTaskByBoard = async boardId => {
 };
 
 const getTaskByBoardAndTask = async (boardId, taskId) => {
-  const task = await DB.getAllEntities(TABLE_NAME, taskId).filter(
-    tasks => tasks.id === taskId && tasks.boardId === boardId
-  );
+  const task = await DB.getAllEntities(TABLE_NAME, {
+    boardId: boardId,
+    id: taskId
+  });
 
   if (!task || task.length === 0) {
     throw new NOT_FOUND_ERROR(`Couldn\`t find a task with id: ${taskId} and board id: ${boardId}`);
@@ -38,7 +46,7 @@ const save = async user => {
   return DB.saveEntity(TABLE_NAME, user);
 };
 
-const update = async (taskId, boardId, task) => {
+const update = async (taskId, boardId = '', task) => {
   const entity = await DB.updateEntity(TABLE_NAME, taskId, task);
 
   if (!entity) {
@@ -55,5 +63,6 @@ module.exports = {
   save,
   update,
   getTaskByBoardAndTask,
-  getTaskByBoard
+  getTaskByBoard,
+  getTasksWhereUserId
 };

@@ -6,6 +6,7 @@ const handleRoute = require('../errors/handleRoute');
 router.route('/', handleRoute).get(
   handleRoute(async (req, res) => {
     const users = await usersService.getAll();
+    console.log(users);
     // map user fields to exclude secret fields like "password"
     res.json(users.map(User.toResponse));
   })
@@ -15,6 +16,7 @@ router.route('/:id').get(
   handleRoute(async (req, res) => {
     const user = await usersService.get(req.params.id);
     res.status(200).send(User.toResponse(user));
+
   })
 );
 
@@ -28,6 +30,7 @@ router.route('/:id').delete(
 router.route('/').post(
   handleRoute(async (req, res) => {
     const user = await usersService.save(User.fromRequest(req.body));
+
     res.status(200).send(User.toResponse(user));
   }));
 
