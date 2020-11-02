@@ -21,7 +21,7 @@ const db = {
     }
   },
   fixTasksStructure: () => {
-    console.log('fix task');
+    //console.log('fix task');
   }
 };
 

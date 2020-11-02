@@ -87,7 +87,7 @@ router.route('/:boardId/tasks/:taskId').get(
         req.params.boardId,
         req.params.taskId
       );
-      console.log('tasks', task);
+      //console.log('tasks', task);
       res.json(Task.toResponse(task));
 
     }));

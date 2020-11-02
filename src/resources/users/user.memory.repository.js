@@ -1,7 +1,18 @@
 // const DB = require('../../utils/inMemoryDb');
 const DB = require('../../utils/MongoDb');
 const NOT_FOUND_ERROR = require('../errors/NotFoundError');
+const FORBIDDEN = require('../errors/ForbiddenError');
 const TABLE_NAME = 'Users';
+
+const findUser = async (where) => {
+  const user = await DB.getAllEntities(TABLE_NAME, where);
+
+  if (!user || user.length !== 1) {
+    throw new FORBIDDEN(``);
+  }
+
+  return user[0];
+};
 
 const getAll = async () => {
   return await DB.getAllEntities(TABLE_NAME);
@@ -38,4 +49,4 @@ const update = async (id, user) => {
   return entity;
 };
 
-module.exports = { getAll, get, remove, save, update };
+module.exports = { getAll, get, remove, save, update, findUser };

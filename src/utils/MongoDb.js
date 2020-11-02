@@ -211,11 +211,63 @@ const dropDatabase = async () => {
   }
 };
 
+const updateManyEntity = async (tableName, find, update) => {
+  try {
+    // noinspection JSCheckFunctionSignatures
+    const mongoClient = await MongoClient.connect(MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+
+    try {
+      const collection = mongoClient.db(MONGO_DATABASE).collection(tableName);
+
+      let cursor = await collection.updateMany(find, { $set: update });
+
+      return await cursor;
+
+    } catch (e) {
+      return null;
+    } finally {
+      await mongoClient.close(false);
+    }
+  } catch (e) {
+    throw new MongoError('MongoError: Unable to connect.');
+  }
+};
+
+const deleteManyEntity = async (tableName, find) => {
+  try {
+    // noinspection JSCheckFunctionSignatures
+    const mongoClient = await MongoClient.connect(MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+
+    try {
+      const collection = mongoClient.db(MONGO_DATABASE).collection(tableName);
+
+      let cursor = await collection.deleteMany(find);
+
+      return await cursor;
+
+    } catch (e) {
+      return null;
+    } finally {
+      await mongoClient.close(false);
+    }
+  } catch (e) {
+    throw new MongoError('MongoError: Unable to connect.');
+  }
+};
+
 module.exports = {
   getAllEntities,
   getEntity,
   saveEntity,
   removeEntity,
   updateEntity,
-  dropDatabase
+  dropDatabase,
+  updateManyEntity,
+  deleteManyEntity
 };

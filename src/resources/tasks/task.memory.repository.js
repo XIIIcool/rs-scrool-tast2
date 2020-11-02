@@ -3,6 +3,16 @@ const DB = require('../../utils/MongoDb');
 const NOT_FOUND_ERROR = require('../errors/NotFoundError');
 const TABLE_NAME = 'Tasks';
 
+const deleteManyTaskByFind = async (find) => {
+  return await DB.deleteManyEntity(TABLE_NAME, find);
+}
+
+const updateManyTasks = async (userId) => {
+  return await DB.updateManyEntity(TABLE_NAME, {
+    userId: userId
+  }, { userId: null });
+};
+
 const getTasksWhereUserId = async (userId) => {
   return await DB.getAllEntities(TABLE_NAME, {
     userId: userId
@@ -64,5 +74,7 @@ module.exports = {
   update,
   getTaskByBoardAndTask,
   getTaskByBoard,
-  getTasksWhereUserId
+  getTasksWhereUserId,
+  updateManyTasks,
+  deleteManyTaskByFind
 };

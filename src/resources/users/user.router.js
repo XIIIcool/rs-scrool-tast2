@@ -6,7 +6,7 @@ const handleRoute = require('../errors/handleRoute');
 router.route('/', handleRoute).get(
   handleRoute(async (req, res) => {
     const users = await usersService.getAll();
-    console.log(users);
+    //console.log(users);
     // map user fields to exclude secret fields like "password"
     res.json(users.map(User.toResponse));
   })
